@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1756326406960,
+  "lastUpdate": 1756556377078,
   "repoUrl": "https://github.com/emirongrr/ethrex",
   "entries": {
     "Benchmark": [
@@ -29,6 +29,36 @@ window.BENCHMARK_DATA = {
             "name": "Block import/Block import ERC20 transfers",
             "value": 158292890627,
             "range": "± 475209743",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "me+git@droak.sh",
+            "name": "Oak",
+            "username": "d-roak"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "b5b710b098e709b9782d05df2811ad450acccd2c",
+          "message": "fix(l1): out of bounds on jwt file (#4148)\n\n**Motivation**\n\nThere's a problem when `contents` value has fewer than 2 characters, it\npanics the program.\n\n**Description**\n\nThe program shouldn't panic with out-of-bounds errors. The solution was\nto replace it with the native check `starts_with()`",
+          "timestamp": "2025-08-29T21:25:10Z",
+          "tree_id": "db714cd50d3c5879a549ed1ff52f7532e6f8beed",
+          "url": "https://github.com/emirongrr/ethrex/commit/b5b710b098e709b9782d05df2811ad450acccd2c"
+        },
+        "date": 1756556375537,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Block import/Block import ERC20 transfers",
+            "value": 161189814241,
+            "range": "± 221890562",
             "unit": "ns/iter"
           }
         ]
