@@ -34,10 +34,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0f4d8d9f.js";
+            window.path_to_searchindex_js = "searchindex-e4ac3429.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-7e7556e2.js"></script>
+        <script src="toc-ec0f4f2d.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -286,10 +286,27 @@ Node options:
           [env: ETHREX_MEMPOOL_MAX_SIZE=]
           [default: 10000]
 
+      --mempool.gap-admit-occupancy-threshold &lt;PERCENTAGE&gt;
+          Mempool occupancy percentage (0-100) at or above which incoming transactions with a nonce gap relative to the sender's on-chain nonce are rejected. Setting to 100 disables the check.
+
+          [env: ETHREX_MEMPOOL_GAP_ADMIT_OCCUPANCY_THRESHOLD=]
+          [default: 90]
+
+      --mempool.max-queued-txs-per-account &lt;MAX_QUEUED_TXS_PER_ACCOUNT&gt;
+          Maximum number of queued (future/nonce-gapped) transactions a single sender may hold in the mempool. Executable (contiguous-nonce) txs are not capped (geth AccountQueue-style).
+
+          [env: ETHREX_MEMPOOL_MAX_QUEUED_TXS_PER_ACCOUNT=]
+          [default: 64]
+
       --precompute-witnesses
           Once synced, computes execution witnesses upon receiving newPayload messages and stores them in local storage
           
           [env: ETHREX_PRECOMPUTE_WITNESSES=]
+
+      --max-reorg-depth &lt;MAX_REORG_DEPTH&gt;
+          Optional operator override for the maximum reorg depth. Omit for finality-bounded cap. Set to 0 to disable deep reorgs entirely. Set to d to reject reorgs of depth &gt; d.
+          
+          [env: ETHREX_MAX_REORG_DEPTH=]
 
 P2P options:
       --bootnodes &lt;BOOTNODE_LIST&gt;...
@@ -383,7 +400,7 @@ RPC options:
           [default: 8545]
 
       --http.api &lt;NAMESPACES&gt;
-          Comma-separated list of JSON-RPC namespaces exposed on the public HTTP and WebSocket endpoints. Defaults to `eth,net,web3`. Enable `admin`, `debug` or `txpool` only when needed; the `engine` namespace is served on the authenticated RPC port and cannot be toggled here.
+          Comma-separated list of JSON-RPC namespaces exposed on the public HTTP and WebSocket endpoints. Defaults to `eth,net,web3`. Enable `admin`, `debug`, `txpool` or `testing` only when needed; the `engine` namespace is served on the authenticated RPC port and cannot be toggled here.
           
           [env: ETHREX_HTTP_API=]
           [default: eth,net,web3]
@@ -394,16 +411,14 @@ RPC options:
           [env: ETHREX_ENABLE_WS=]
 
       --ws.addr &lt;ADDRESS&gt;
-          Listening address for the websocket rpc server.
+          Listening address for the WebSocket JSON-RPC server. When unset it inherits `--http.addr` (loopback by default). Set it equal to the HTTP address to serve HTTP and WebSocket on a single listener.
           
           [env: ETHREX_WS_ADDR=]
-          [default: 0.0.0.0]
 
       --ws.port &lt;PORT&gt;
-          Listening port for the websocket rpc server.
+          Listening port for the WebSocket JSON-RPC server. When unset it inherits `--http.port`, so an enabled WebSocket shares the HTTP listener unless a different port is given.
           
           [env: ETHREX_WS_PORT=]
-          [default: 8546]
 
       --authrpc.addr &lt;ADDRESS&gt;
           Listening address for the authenticated rpc server.
@@ -428,7 +443,7 @@ Block building options:
           Block extra data message.
           
           [env: ETHREX_BUILDER_EXTRA_DATA=]
-          [default: "ethrex 16.0.0"]
+          [default: "ethrex 23.0.0"]
 
       --builder.gas-limit &lt;GAS_LIMIT&gt;
           Target block gas limit.
@@ -476,7 +491,7 @@ Options:
 
 Node options:
       --network &lt;GENESIS_FILE_PATH&gt;
-          Alternatively, the name of a known network can be provided instead to use its preset genesis file and include its preset bootnodes. The networks currently supported include holesky, sepolia, hoodi and mainnet. If not specified, defaults to mainnet.
+          Alternatively, the name of a known network can be provided instead to use its preset genesis file and include its preset bootnodes. The networks currently supported include sepolia, hoodi and mainnet. If not specified, defaults to mainnet.
 
           [env: ETHREX_NETWORK=]
 
@@ -524,6 +539,12 @@ Node options:
 
           [env: ETHREX_MEMPOOL_MAX_SIZE=]
           [default: 10000]
+
+      --mempool.gap-admit-occupancy-threshold &lt;PERCENTAGE&gt;
+          Mempool occupancy percentage (0-100) at or above which incoming transactions with a nonce gap relative to the sender's on-chain nonce are rejected. Setting to 100 disables the check.
+
+          [env: ETHREX_MEMPOOL_GAP_ADMIT_OCCUPANCY_THRESHOLD=]
+          [default: 90]
 
 P2P options:
       --bootnodes &lt;BOOTNODE_LIST&gt;...
@@ -589,7 +610,7 @@ RPC options:
           [default: 8545]
 
       --http.api &lt;NAMESPACES&gt;
-          Comma-separated list of JSON-RPC namespaces exposed on the public HTTP and WebSocket endpoints. Defaults to `eth,net,web3`. Enable `admin`, `debug` or `txpool` only when needed; the `engine` namespace is served on the authenticated RPC port and cannot be toggled here.
+          Comma-separated list of JSON-RPC namespaces exposed on the public HTTP and WebSocket endpoints. Defaults to `eth,net,web3`. Enable `admin`, `debug`, `txpool` or `testing` only when needed; the `engine` namespace is served on the authenticated RPC port and cannot be toggled here.
 
           [env: ETHREX_HTTP_API=]
           [default: eth,net,web3]
@@ -600,16 +621,14 @@ RPC options:
           [env: ETHREX_ENABLE_WS=]
 
       --ws.addr &lt;ADDRESS&gt;
-          Listening address for the websocket rpc server.
+          Listening address for the WebSocket JSON-RPC server. When unset it inherits `--http.addr` (loopback by default). Set it equal to the HTTP address to serve HTTP and WebSocket on a single listener.
 
           [env: ETHREX_WS_ADDR=]
-          [default: 0.0.0.0]
 
       --ws.port &lt;PORT&gt;
-          Listening port for the websocket rpc server.
+          Listening port for the WebSocket JSON-RPC server. When unset it inherits `--http.port`, so an enabled WebSocket shares the HTTP listener unless a different port is given.
 
           [env: ETHREX_WS_PORT=]
-          [default: 8546]
 
       --authrpc.addr &lt;ADDRESS&gt;
           Listening address for the authenticated rpc server.
@@ -634,7 +653,7 @@ Block building options:
           Block extra data message.
 
           [env: ETHREX_BUILDER_EXTRA_DATA=]
-          [default: "ethrex 16.0.0"]
+          [default: "ethrex 23.0.0"]
 
       --builder.gas-limit &lt;GAS_LIMIT&gt;
           Target block gas limit.
